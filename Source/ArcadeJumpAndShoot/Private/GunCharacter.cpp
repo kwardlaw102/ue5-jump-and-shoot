@@ -17,9 +17,13 @@ AGunCharacter::AGunCharacter()
 
 	SpringArmComp->SetupAttachment(GetMesh());
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
-	SpringArmComp->bUsePawnControlRotation = true;
 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	SpringArmComp->SetRelativeRotation(FQuat(FRotator(-10.0f, -90.0f, 0)));
+	SpringArmComp->SocketOffset = FVector(0.0f, 0.0f, 100.0f);
+	SpringArmComp->TargetArmLength = 1000.0f;
+	SpringArmComp->bUsePawnControlRotation = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->bIgnoreBaseRotation = true;
 }
