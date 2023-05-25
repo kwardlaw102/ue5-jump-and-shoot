@@ -68,21 +68,25 @@ void AGunCharacter::SetupEnhancedInput(UInputComponent* PlayerInputComponent)
 
 void AGunCharacter::Shoot(const FInputActionValue& Value)
 {
-	check(GEngine != nullptr);
-	UE_LOG(LogTemp, Warning, TEXT("IA_Shoot triggered"));
+	//check(GEngine != nullptr);
+	//UE_LOG(LogTemp, Warning, TEXT("IA_Shoot triggered"));
 }
 
 void AGunCharacter::DoJump(const FInputActionValue& Value)
 {
-	check(GEngine != nullptr);
-	UE_LOG(LogTemp, Warning, TEXT("IA_Jump triggered"));
-	Jump();
+	//check(GEngine != nullptr);
+	//UE_LOG(LogTemp, Warning, TEXT("IA_Jump triggered: %d"), Value.Get<bool>());
+
+	if (Value.Get<bool>())
+		Jump();
+	else
+		StopJumping();
 }
 
 void AGunCharacter::Move(const FInputActionValue& Value)
 {
-	check(GEngine != nullptr);
-	UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+	//check(GEngine != nullptr);
+	//UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
 	FVector2D FloatValue = Value.Get<FVector2D>();
 	
 	const FRotator Rotation = Controller->GetControlRotation();
