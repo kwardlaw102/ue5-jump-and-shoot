@@ -30,9 +30,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ShootAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* JumpAction;
+
 	void SetupEnhancedInput(UInputComponent* PlayerInputComponent);
 
 	void Shoot(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value);
+	void DoJump(const FInputActionValue& Value);
 
 public:	
 	// Called every frame
