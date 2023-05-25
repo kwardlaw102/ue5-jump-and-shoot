@@ -36,6 +36,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 		UInputAction* JumpAction;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class USpringArmComponent* SpringArmComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UCameraComponent* CameraComp;
+
 	void SetupEnhancedInput(UInputComponent* PlayerInputComponent);
 
 	void Shoot(const FInputActionValue& Value);

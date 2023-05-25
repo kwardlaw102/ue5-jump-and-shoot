@@ -4,21 +4,30 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
-// Sets default values
 AGunCharacter::AGunCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+
+	SpringArmComp->SetupAttachment(GetMesh());
+	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
+	SpringArmComp->bUsePawnControlRotation = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	GetCharacterMovement()->bIgnoreBaseRotation = true;
 }
 
 // Called when the game starts or when spawned
 void AGunCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	//check(GEngine != nullptr);
-	//GEngine->AddOnScreenDebugMessage(-1, 360.0f, FColor::Red, TEXT("GunCharacter BeginPlay 3"));
-	//UE_LOG(LogTemp, Warning, TEXT("Hello world 2"));
 }
 
 // Called every frame
@@ -63,10 +72,17 @@ void AGunCharacter::DoJump(const FInputActionValue& Value)
 {
 	check(GEngine != nullptr);
 	UE_LOG(LogTemp, Warning, TEXT("IA_Jump triggered"));
+	Jump();
 }
 
 void AGunCharacter::Move(const FInputActionValue& Value)
 {
 	check(GEngine != nullptr);
 	UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+	FVector2D FloatValue = Value.Get<FVector2D>();
+	
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	AddMovementInput(Direction, FloatValue.X);
 }
