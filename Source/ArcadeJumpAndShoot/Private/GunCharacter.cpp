@@ -32,8 +32,6 @@ AGunCharacter::AGunCharacter()
 void AGunCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Hello world 2"));
-	UE_LOG(LogTemp, Warning, TEXT("Hello world 2"));
 }
 
 // Called every frame
@@ -62,13 +60,15 @@ void AGunCharacter::SetupEnhancedInput(UInputComponent* PlayerInputComponent)
 	if (!MoveAction) UE_LOG(LogTemp, Warning, TEXT("MoveAction is missing; character may not behave properly"));
 
 	UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	if (!Input) return;
 	Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGunCharacter::Move);
 	Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AGunCharacter::DoJump);
-	if (!Input) return;
 	Input->BindAction(ShootAction, ETriggerEvent::Triggered, this, &AGunCharacter::Shoot);
 }
 
-	bool BoolValue = Value.Get<bool>();
+void AGunCharacter::Shoot(const FInputActionValue& Value)
+{
+	check(GEngine != nullptr);
 	UE_LOG(LogTemp, Warning, TEXT("IA_Shoot triggered"));
 }
 
@@ -89,6 +89,4 @@ void AGunCharacter::Move(const FInputActionValue& Value)
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	AddMovementInput(Direction, FloatValue.X);
-	}
-	}
 }
